@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Photo Editor</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
     <h1>Photo Editor</h1>
     <form method="POST" action="{{ url_for('index') }}" enctype="multipart/form-data">
         <input type="file" name="photo" accept="image/*" required>
         <input type="submit" value="Upload">
     </form>
-</body>
-</html>
+{% endblock %}

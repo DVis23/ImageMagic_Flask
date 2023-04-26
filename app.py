@@ -37,14 +37,8 @@ def edit(filename):
             enhancer = ImageEnhance.Color(img)
             img = enhancer.enhance(float(saturation_value))
         img.save(photos.path(filename))
-        return redirect(url_for('download', filename=filename))
-    return render_template('edit.html', photo=photo)
-
-
-@app.route('/download/<filename>')
-def download(filename):
-    path = photos.path(filename)
-    return send_file(path, as_attachment=True)
+        return redirect(url_for('index'))
+    return render_template('edit.html', photo=photo, filename=filename)
 
 
 if __name__ == "__main__":

@@ -1,9 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Photo Editor</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
     <h1>Photo Editor</h1>
     <img id="photo" src="{{ photo }}" alt="Photo">
     <form method="POST" action="{{ url_for('edit', filename=filename) }}">
@@ -51,5 +47,4 @@
             downloadLink.click(); // скачиваем файл
         });
     </script>
-</body>
-</html>
+{% endblock %}
