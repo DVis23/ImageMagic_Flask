@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Photo Editor</title>
+</head>
+<body>
+    <h1>Photo Editor</h1>
+    <img id="photo" src="{{ photo }}" alt="Photo">
+    <form method="POST" action="{{ url_for('edit', filename=filename) }}">
+        <label for="brightness-slider">Brightness:</label>
+        <input type="range" id="brightness-slider" name="brightness" min="0" max="2" step="0.1" value="1"><br>
+        <label for="contrast-slider">Contrast:</label>
+        <input type="range" id="contrast-slider" name="contrast" min="0" max="2" step="0.1" value="1"><br>
+        <label for="saturation-slider">Saturation:</label>
+        <input type="range" id="saturation-slider" name="saturation" min="0" max="2" step="0.1" value="1"><br>
+        <input type="submit" value="Apply">
+
+        <button id="download-btn">Save</button>
+    </form>
+    <script>
+        function applyFilters() {
+            const photo = document.getElementById('photo');
+            const brightness = document.getElementById('brightness-slider').value;
+            const contrast = document.getElementById('contrast-slider').value;
+            const saturation = document.getElementById('saturation-slider').value;
+            photo.style.filter = `brightness(${brightness}) contrast(${contrast}) saturate(${saturation})`;
+        }
+
+        document.querySelectorAll('input[type="range"]').forEach(el => {
+            el.addEventListener('input', applyFilters);
+        });
+
+        document.getElementById('download-btn').addEventListener('click', function() {
+            // Создаем временный canvas
+            var photo = document.getElementById('photo');
+            var canvas = document.createElement('canvas');
+            canvas.width = photo.width;
+            canvas.height = photo.height;
+            var context = canvas.getContext('2d');
+
+            var brightness = document.getElementById('brightness-slider').value;
+            var contrast = document.getElementById('contrast-slider').value;
+            var saturation = document.getElementById('saturation-slider').value;
+            context.filter = `brightness(${brightness}) contrast(${contrast}) saturate(${saturation})`;
+            context.drawImage(photo, 0, 0);
+
+            // Создаем ссылку для скачивания файла
+            var downloadLink = document.createElement('a');
+            downloadLink.setAttribute('download', 'edited_photo.jpg'); // имя файла для скачивания
+            downloadLink.setAttribute('href', canvas.toDataURL()); // ссылка на отредактированное изображение
+            downloadLink.click(); // скачиваем файл
+        });
+    </script>
+</body>
+</html>
