@@ -1,18 +1,47 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Photo Editor</h1>
-    <img id="photo" src="{{ photo }}" alt="Photo">
-    <form method="POST" action="{{ url_for('edit', filename=filename) }}">
-        <label for="brightness-slider">Brightness:</label>
-        <input type="range" id="brightness-slider" name="brightness" min="0" max="2" step="0.1" value="1"><br>
-        <label for="contrast-slider">Contrast:</label>
-        <input type="range" id="contrast-slider" name="contrast" min="0" max="2" step="0.1" value="1"><br>
-        <label for="saturation-slider">Saturation:</label>
-        <input type="range" id="saturation-slider" name="saturation" min="0" max="2" step="0.1" value="1"><br>
-        <input type="submit" value="Apply">
+<style>
+    #container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+    #photo-container {
+        background-color: #ffffff;
+        padding: 20px;
+        max-width: 500px;
+        max-height: 500px;
+    }
+    #sliders-container {
+        background-color: #333333;
+        color: #ffffff;
+        padding: 20px;
+        margin-left: 20px;
+    }
+    #photo {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+</style>
 
-        <button id="download-btn">Save</button>
-    </form>
+<div id="container">
+    <div id="photo-container">
+        <img id="photo" src="{{ photo }}" alt="Photo">
+    </div>
+    <div id="sliders-container">
+        <form method="POST" action="{{ url_for('edit', filename=filename) }}">
+            <label for="brightness-slider">Brightness:</label>
+            <input type="range" id="brightness-slider" name="brightness" min="0" max="2" step="0.1" value="1"><br>
+            <label for="contrast-slider">Contrast:</label>
+            <input type="range" id="contrast-slider" name="contrast" min="0" max="2" step="0.1" value="1"><br>
+            <label for="saturation-slider">Saturation:</label>
+            <input type="range" id="saturation-slider" name="saturation" min="0" max="2" step="0.1" value="1"><br>
+            <button id="download-btn">Save</button>
+        </form>
+    </div>
+</div>
     <script>
         function applyFilters() {
             const photo = document.getElementById('photo');
@@ -30,21 +59,28 @@
             // Создаем временный canvas
             var photo = document.getElementById('photo');
             var canvas = document.createElement('canvas');
-            canvas.width = photo.width;
-            canvas.height = photo.height;
+            canvas.width = photo.naturalWidth; // использовать naturalWidth и naturalHeight для сохранения размеров оригинального изображения
+            canvas.height = photo.naturalHeight;
             var context = canvas.getContext('2d');
 
             var brightness = document.getElementById('brightness-slider').value;
             var contrast = document.getElementById('contrast-slider').value;
             var saturation = document.getElementById('saturation-slider').value;
             context.filter = `brightness(${brightness}) contrast(${contrast}) saturate(${saturation})`;
-            context.drawImage(photo, 0, 0);
 
-            // Создаем ссылку для скачивания файла
-            var downloadLink = document.createElement('a');
-            downloadLink.setAttribute('download', 'edited_photo.jpg'); // имя файла для скачивания
-            downloadLink.setAttribute('href', canvas.toDataURL()); // ссылка на отредактированное изображение
-            downloadLink.click(); // скачиваем файл
+            // Загружаем оригинальное изображение в объект Image
+            var img = new Image();
+            img.onload = function() {
+                // Рисуем оригинальное изображение на canvas
+                context.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                // Создаем ссылку для скачивания файла
+                var downloadLink = document.createElement('a');
+                downloadLink.setAttribute('download', 'edited_photo.jpg'); // имя файла для скачивания
+                downloadLink.setAttribute('href', canvas.toDataURL()); // ссылка на отредактированное изображение
+                downloadLink.click(); // скачиваем файл
+            };
+            img.src = photo.src;
         });
     </script>
 {% endblock %}

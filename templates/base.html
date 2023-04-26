@@ -1,11 +1,30 @@
 <html>
     <head>
       <title>ImageMagic</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .dark {
+                background-color: #333;
+                color: #fff;
+                font-size: 36px; /* еще больший размер для "ImageMagic:" */
+                font-family: Arial Narrow, sans-serif; /* другой шрифт для "ImageMagic:" */
+                padding: 8px;
+                line-height: 52px;
+            }
+            #home-link {
+                font-size: 23px; /* меньший размер для "Home" */
+                color: #fff; /* изменение цвета ссылки на белый */
+                float: right;
+            }
+    </style>
     </head>
     <body>
-        <div>
-            ImageMagic:
-            <a href="{{ url_for('index') }}">Home</a>
+        <div class="dark">
+            ImageMagic
+            <a id="home-link" href="{{ url_for('index') }}">Home</a>
         </div>
         {% block content %}{% endblock %}
     </body>
