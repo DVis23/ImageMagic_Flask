@@ -5,24 +5,35 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 20px;
+        padding: 0px;
     }
     #photo-container {
-        background-color: #ffffff;
-        padding: 20px;
-        max-width: 500px;
-        max-height: 500px;
+        background-color: #f5f5f5;
+        padding: 5px;
+        height: calc(100vh - 12vh);
+        width: 100vw;
+        max-height: 100%;
+        max-width: 100%;
     }
     #sliders-container {
         background-color: #333333;
         color: #ffffff;
-        padding: 20px;
-        margin-left: 20px;
+        padding: 5px;
+        height: calc(100vh - 12vh);
+        max-height: 100%;
     }
     #photo {
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
+        object-position: center;
+    }
+     button {
+        margin-top: 5px;
+        color: #fff;
+        background-color: #4d4d4d;
+        width: 130px;
+        height: 20px;
     }
 </style>
 
@@ -38,7 +49,8 @@
             <input type="range" id="contrast-slider" name="contrast" min="0" max="2" step="0.1" value="1"><br>
             <label for="saturation-slider">Saturation:</label>
             <input type="range" id="saturation-slider" name="saturation" min="0" max="2" step="0.1" value="1"><br>
-            <button id="download-btn">Save</button>
+            <button id="download-btn">Save</button><br>
+            <button id="apply-btn">Apply</button>
         </form>
     </div>
 </div>
