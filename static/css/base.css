@@ -1,0 +1,22 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial Narrow, sans-serif;
+}
+.dark {
+    background-color: #333;
+    color: #fff;
+    font-size: 36px;
+    padding: 8px;
+    line-height: 52px;
+}
+    #photo_editor {
+    font-size: 23px;
+    color: #fff;
+}
+#home-link {
+    font-size: 23px;
+    color: #fff;
+    float: right;
+    margin-right: 20px;
+}

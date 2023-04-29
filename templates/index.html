@@ -1,75 +1,24 @@
-{% extends "base.html" %}
-{% block content %}
-    <style>
-        #container {
-            background-color: #333;
-            border-radius: 8px;
-            text-align: center;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            margin-right: -50%;
-            transform: translate(-50%, -50%);
-            width: 260px;
-            height: 230px;
-        }
-        #heading {
-            color: white;
-            font-size: 36px;
-        }
-        input[type="submit"],
-        .custom-file-upload {
-            margin-top: 5px;
-            color: white;
-            background-color: #4d4d4d;
-            font-size: 20px;
-            border-radius: 4px;
-            padding: 6px 12px;
-            cursor: pointer;
-            border: none;
-            width: 230px;
-            height: 36px;
-            box-sizing: border-box;
-            text-align: center;
-            font-family: Arial Narrow, sans-serif;
-        }
-        input[type="submit"]:hover,
-        .custom-file-upload:hover {
-            background-color: #424242;
-        }
-        .custom-file-upload {
-            display: inline-block;
-        }
-        #file-upload {
-            display: none;
-        }
-        #file-name {
-            color: #dbdbdb;
-        }
-    </style>
-    <div id="container">
-        <br><br>
-        <a id="heading"> GET STARTED </a><br><br><br>
-    <form method="POST" action="{{ url_for('index') }}" enctype="multipart/form-data">
-        <label for="file-upload" class="custom-file-upload">
-            Select a file
-        </label>
-        <input id="file-upload" type="file" name="photo" accept="image/*" required><br>
-        <div id="file-name">No file chosen</div>
-        <input type="submit" value="Upload">
-    </form>
-    </div>
-    <script>
-        const fileInput = document.querySelector('input[type="file"]');
-        const fileName = document.querySelector('#file-name');
-
-        fileInput.addEventListener('change', () => {
-            const file = fileInput.files[0];
-            if (file) {
-                fileName.textContent = file.name;
-            } else {
-                fileName.textContent = 'No file chosen';
-            }
-        });
-    </script>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+    {% extends "base.html" %}
+    {% block content %}
+        <div id="container">
+            <br><br>
+            <a id="heading"> GET STARTED </a><br><br><br>
+            <form method="POST" action="{{ url_for('index') }}" enctype="multipart/form-data">
+                <label for="file-upload" class="custom-file-upload">
+                    Select a file
+                </label>
+                <input id="file-upload" type="file" name="photo" accept="image/*" required><br>
+                <div id="file-name">No file chosen</div>
+                <input type="submit" value="Upload">
+            </form>
+        </div>
+        <script src="{{ url_for('static', filename='js/index.js') }}"> </script>
+    {% endblock %}
+</body>
+</html>

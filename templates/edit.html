@@ -1,52 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/edit.css') }}">
+</head>
+<body>
 {% extends "base.html" %}
 {% block content %}
-<style>
-    #container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0px;
-    }
-    #photo-container {
-        background-color: #f5f5f5;
-        padding: 5px;
-        height: calc(100vh - 12vh);
-        width: 100vw;
-        max-height: 100%;
-        max-width: 100%;
-    }
-    #sliders-container {
-        background-color: #333333;
-        color: #ffffff;
-        padding: 5px;
-        height: calc(100vh - 12vh);
-        max-height: 100%;
-    }
-    #photo {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-        object-position: center;
-    }
-     button {
-        margin-top: 5px;
-        color: white;
-        background-color: #4d4d4d;
-        font-size: 12px;
-        border-radius: 4px;
-        padding: 6px 12px;
-        cursor: pointer;
-        border: none;
-        width: 130px;
-        height: 23px;
-        box-sizing: border-box;
-        text-align: center;
-    }
-    button:hover {
-        background-color: #424242;
-    }
-</style>
-
 <div id="container">
     <div id="photo-container">
         <img id="photo" src="{{ photo }}" alt="Photo">
@@ -64,45 +23,7 @@
         </form>
     </div>
 </div>
-    <script>
-        function applyFilters() {
-            const photo = document.getElementById('photo');
-            const brightness = document.getElementById('brightness-slider').value;
-            const contrast = document.getElementById('contrast-slider').value;
-            const saturation = document.getElementById('saturation-slider').value;
-            photo.style.filter = `brightness(${brightness}) contrast(${contrast}) saturate(${saturation})`;
-        }
-
-        document.querySelectorAll('input[type="range"]').forEach(el => {
-            el.addEventListener('input', applyFilters);
-        });
-
-        document.getElementById('download-btn').addEventListener('click', function() {
-            // Создаем временный canvas
-            var photo = document.getElementById('photo');
-            var canvas = document.createElement('canvas');
-            canvas.width = photo.naturalWidth; // использовать naturalWidth и naturalHeight для сохранения размеров оригинального изображения
-            canvas.height = photo.naturalHeight;
-            var context = canvas.getContext('2d');
-
-            var brightness = document.getElementById('brightness-slider').value;
-            var contrast = document.getElementById('contrast-slider').value;
-            var saturation = document.getElementById('saturation-slider').value;
-            context.filter = `brightness(${brightness}) contrast(${contrast}) saturate(${saturation})`;
-
-            // Загружаем оригинальное изображение в объект Image
-            var img = new Image();
-            img.onload = function() {
-                // Рисуем оригинальное изображение на canvas
-                context.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-                // Создаем ссылку для скачивания файла
-                var downloadLink = document.createElement('a');
-                downloadLink.setAttribute('download', 'edited_photo.jpg'); // имя файла для скачивания
-                downloadLink.setAttribute('href', canvas.toDataURL()); // ссылка на отредактированное изображение
-                downloadLink.click(); // скачиваем файл
-            };
-            img.src = photo.src;
-        });
-    </script>
+    <script src="{{ url_for('static', filename='js/edit.js') }}"></script>
 {% endblock %}
+</body>
+</html>
