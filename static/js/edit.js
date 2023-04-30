@@ -1,16 +1,37 @@
-function applyFilters() {
-    const photo = document.getElementById('photo');
-    const brightness = document.getElementById('brightness-slider').value;
-    const contrast = document.getElementById('contrast-slider').value;
-    const saturation = document.getElementById('saturation-slider').value;
-    photo.style.filter = `brightness(${brightness}) contrast(${contrast}) saturate(${saturation})`;
-}
-
 document.querySelectorAll('input[type="range"]').forEach(el => {
-    el.addEventListener('input', applyFilters);
+    el.addEventListener('input', updateImage);
 });
 
+function updateImage() {
+    // Получаем значения ползунков
+    const filename = document.getElementById("filename_input").value;
+
+    const brightnessValue = document.getElementById("brightness-slider").value;
+    const contrastValue = document.getElementById("contrast-slider").value;
+    const saturationValue = document.getElementById("saturation-slider").value;
+
+    // Отправляем AJAX-запрос на серверную часть
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/update_image");
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Обновляем изображение на странице
+            document.getElementById("photo").src = "data:image/jpeg;base64," + xhr.responseText;
+        } else {
+            console.log("Error occurred while updating the image");
+        }
+    };
+    xhr.send(JSON.stringify({
+        filename: filename,
+        brightness: brightnessValue,
+        contrast: contrastValue,
+        saturation: saturationValue
+    }));
+}
+
 document.getElementById('download-btn').addEventListener('click', function() {
+
     // Создаем временный canvas
     var photo = document.getElementById('photo');
     var canvas = document.createElement('canvas');

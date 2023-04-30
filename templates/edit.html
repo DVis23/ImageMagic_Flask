@@ -9,15 +9,16 @@
 <div id="container">
     <div id="photo-container">
         <img id="photo" src="{{ photo }}" alt="Photo">
+        <input type="hidden" id="filename_input" name="filename" value="{{ filename }}">
     </div>
     <div id="sliders-container">
         <form method="POST" action="{{ url_for('edit', filename=filename) }}">
             <label for="brightness-slider">Brightness:</label>
-            <input type="range" id="brightness-slider" name="brightness" min="0" max="2" step="0.1" value="1"><br>
+            <input type="range" id="brightness-slider" name="brightness" min="0" max="2" step="0.1" value="1" onchange="updateImage()"><br>
             <label for="contrast-slider">Contrast:</label>
-            <input type="range" id="contrast-slider" name="contrast" min="0" max="2" step="0.1" value="1"><br>
+            <input type="range" id="contrast-slider" name="contrast" min="0" max="2" step="0.1" value="1" onchange="updateImage()"><br>
             <label for="saturation-slider">Saturation:</label>
-            <input type="range" id="saturation-slider" name="saturation" min="0" max="2" step="0.1" value="1"><br>
+            <input type="range" id="saturation-slider" name="saturation" min="0" max="2" step="0.1" value="1" onchange="updateImage()"><br>
             <button id="download-btn">Save</button><br>
             <button id="apply-btn">Apply</button>
         </form>
