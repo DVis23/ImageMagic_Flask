@@ -15,6 +15,22 @@ app.config['UPLOADED_PHOTOS_ALLOW'] = set(['png', 'jpg', 'jpeg'])
 configure_uploads(app, photos)
 
 
+def apply_filters(img, brightness, contrast, saturation, sharpness):
+    if brightness:
+        enhancer = ImageEnhance.Brightness(img)
+        img = enhancer.enhance(brightness)
+    if contrast:
+        enhancer = ImageEnhance.Contrast(img)
+        img = enhancer.enhance(contrast)
+    if saturation:
+        enhancer = ImageEnhance.Color(img)
+        img = enhancer.enhance(saturation)
+    if sharpness:
+        enhancer = ImageEnhance.Sharpness(img)
+        img = enhancer.enhance(sharpness)
+    return img
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST' and 'photo' in request.files:
@@ -28,18 +44,11 @@ def edit(filename):
     photo = photos.url(filename)
     if request.method == 'POST':
         img = Image.open(photos.path(filename))
-        bright_value = request.form.get('brightness')
-        contrast_value = request.form.get('contrast')
-        saturation_value = request.form.get('saturation')
-        if bright_value:
-            enhancer = ImageEnhance.Brightness(img)
-            img = enhancer.enhance(float(bright_value))
-        if contrast_value:
-            enhancer = ImageEnhance.Contrast(img)
-            img = enhancer.enhance(float(contrast_value))
-        if saturation_value:
-            enhancer = ImageEnhance.Color(img)
-            img = enhancer.enhance(float(saturation_value))
+        bright_value = float(request.form.get('brightness'))
+        contrast_value = float(request.form.get('contrast'))
+        saturation_value = float(request.form.get('saturation'))
+        sharpness_value = float(request.form.get('sharpness'))
+        img = apply_filters(img, bright_value, contrast_value, saturation_value, sharpness_value)
         img.save(photos.path(filename))
         return redirect(url_for('edit', filename=filename))
     return render_template('edit.html', photo=photo, filename=filename, filename_input=filename)
@@ -53,20 +62,13 @@ def update_image():
     bright_value = float(request.get_json()['brightness'])
     contrast_value = float(request.get_json()['contrast'])
     saturation_value = float(request.get_json()['saturation'])
+    sharpness_value = float(request.get_json()['sharpness'])
 
     # Получаем изображение из POST-запроса
     img = Image.open(join('static', 'uploads', filename))
     # Обрабатываем изображение
     img = img.convert("RGB")
-    if bright_value:
-        enhancer = ImageEnhance.Brightness(img)
-        img = enhancer.enhance(float(bright_value))
-    if contrast_value:
-        enhancer = ImageEnhance.Contrast(img)
-        img = enhancer.enhance(float(contrast_value))
-    if saturation_value:
-        enhancer = ImageEnhance.Color(img)
-        img = enhancer.enhance(float(saturation_value))
+    img = apply_filters(img, bright_value, contrast_value, saturation_value, sharpness_value)
 
     # Сохраняем измененное изображение в память
     image_buffer = io.BytesIO()

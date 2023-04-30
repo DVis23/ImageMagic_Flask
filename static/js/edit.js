@@ -3,12 +3,14 @@ document.querySelectorAll('input[type="range"]').forEach(el => {
 });
 
 function updateImage() {
+
     // Получаем значения ползунков
     const filename = document.getElementById("filename_input").value;
 
     const brightnessValue = document.getElementById("brightness-slider").value;
     const contrastValue = document.getElementById("contrast-slider").value;
     const saturationValue = document.getElementById("saturation-slider").value;
+    const sharpnessValue = document.getElementById("sharpness-slider").value;
 
     // Отправляем AJAX-запрос на серверную часть
     var xhr = new XMLHttpRequest();
@@ -26,7 +28,8 @@ function updateImage() {
         filename: filename,
         brightness: brightnessValue,
         contrast: contrastValue,
-        saturation: saturationValue
+        saturation: saturationValue,
+        sharpness: sharpnessValue
     }));
 }
 
@@ -38,11 +41,6 @@ document.getElementById('download-btn').addEventListener('click', function() {
     canvas.width = photo.naturalWidth; // использовать naturalWidth и naturalHeight для сохранения размеров оригинального изображения
     canvas.height = photo.naturalHeight;
     var context = canvas.getContext('2d');
-
-    var brightness = document.getElementById('brightness-slider').value;
-    var contrast = document.getElementById('contrast-slider').value;
-    var saturation = document.getElementById('saturation-slider').value;
-    context.filter = `brightness(${brightness}) contrast(${contrast}) saturate(${saturation})`;
 
     // Загружаем оригинальное изображение в объект Image
     var img = new Image();
